@@ -8,6 +8,20 @@ Situação em 25/09/2026: a página já permite editar tudo (processos,
 fundamentos, etapas e ligações) e gravar em `data/bundle.js`. O conteúdo
 jurídico continua preliminar.
 
+0. **Salvar pelo GitHub Pages** (prioridade — relatado em 25/09/2026)
+   - Problema: no Pages o site é só leitura. "Salvar no arquivo" grava o
+     `bundle.js` no computador de quem edita, não no site; ao recarregar, o
+     Pages entrega o `data/bundle.js` antigo e o rascunho fica só naquele
+     navegador. A gravação permanente só funciona abrindo o `index.html` local.
+   - Ideia: o botão "Salvar" faz um commit de `data/bundle.js` na branch `dev`
+     pela API do GitHub (`PUT /repos/mervy/fluxogramas-vij/contents/data/bundle.js`,
+     com o `sha` atual); o Pages republica em ~1 min para todos. Sem servidor.
+   - Token fine-grained só com Contents: read/write neste repositório, colado
+     uma vez na página e guardado só no navegador de quem edita (leitores não
+     precisam). Tratar conflito (sha mudou), token inválido e aviso de
+     "publicando…". Manter o salvar em arquivo local como alternativa.
+   - [ ] Confirmar com o usuário se o sintoma foi esse (sumiu ao recarregar)
+   - [ ] Implementar e testar
 1. **Definições com a Vara**
    - [ ] Onde a página vai rodar: pasta compartilhada/local (`file://`) ou
      intranet. Em `http://` sem HTTPS o navegador não deixa gravar direto no
