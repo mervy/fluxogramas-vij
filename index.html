@@ -12,14 +12,39 @@
     <p class="sub">Vara da Infância e Juventude</p>
   </header>
 
+  <div class="aviso-rascunho" id="aviso-rascunho" role="status" hidden>
+    <span>Há alterações que ainda <strong>não foram gravadas no arquivo de dados</strong>
+    — por enquanto elas estão guardadas só neste navegador.</span>
+    <span class="aviso-botoes">
+      <button type="button" class="primario" data-acao="salvar">Salvar no arquivo</button>
+      <button type="button" data-acao="descartar">Descartar alterações</button>
+    </span>
+  </div>
+
   <section class="controles" aria-label="Controles">
     <div class="filtro-principal">
-      <label for="sel-processo">Tipo de processo
-        <select id="sel-processo"></select>
-      </label>
-      <label for="sel-fundamento">Fundamento legal
-        <select id="sel-fundamento"></select>
-      </label>
+      <div class="campo">
+        <label for="sel-processo">Tipo de processo</label>
+        <div class="campo-linha">
+          <select id="sel-processo"></select>
+          <span class="so-edicao botoes-mini">
+            <button type="button" id="btn-novo-processo" title="Novo processo">+ Novo</button>
+            <button type="button" id="btn-editar-processo" title="Renomear processo">✎</button>
+            <button type="button" id="btn-excluir-processo" title="Excluir processo">🗑</button>
+          </span>
+        </div>
+      </div>
+      <div class="campo">
+        <label for="sel-fundamento">Fundamento legal</label>
+        <div class="campo-linha">
+          <select id="sel-fundamento"></select>
+          <span class="so-edicao botoes-mini">
+            <button type="button" id="btn-novo-fundamento" title="Novo fundamento">+ Novo</button>
+            <button type="button" id="btn-editar-fundamento" title="Editar fundamento">✎</button>
+            <button type="button" id="btn-excluir-fundamento" title="Excluir fundamento">🗑</button>
+          </span>
+        </div>
+      </div>
     </div>
     <div class="filtros">
       <input type="search" id="filtro-texto" placeholder="Buscar etapa, artigo, responsável…">
@@ -35,7 +60,23 @@
     <button id="btn-orientacao" type="button">Ver em vertical</button>
     <button id="btn-imprimir" type="button">Imprimir / PDF</button>
     <button id="btn-svg" type="button">Exportar SVG</button>
+    <button id="btn-edicao" type="button" class="btn-edicao" aria-pressed="false">✎ Editar fluxos</button>
   </section>
+
+  <section class="barra-edicao so-edicao" aria-label="Edição">
+    <button type="button" id="btn-desfazer" disabled>↶ Desfazer</button>
+    <button type="button" id="btn-salvar" class="primario">💾 Salvar no arquivo</button>
+    <button type="button" id="btn-abrir">📂 Abrir arquivo…</button>
+    <button type="button" id="btn-descartar">Descartar alterações</button>
+    <input type="file" id="input-arquivo" accept=".js,.json" hidden>
+    <p class="dica">
+      As alterações ficam guardadas neste navegador até você clicar em <strong>Salvar no arquivo</strong>.
+      Na primeira vez, escolha o arquivo <code>data/bundle.js</code> da pasta do projeto para substituí-lo
+      (Chrome ou Edge). Em outros navegadores, o arquivo é baixado e você o copia para <code>data/</code>.
+    </p>
+  </section>
+
+  <p class="info-fluxo" id="info-fluxo"></p>
 
   <main>
     <div class="diagrama" id="diagrama"></div>
@@ -51,22 +92,26 @@
 
   <section class="lista">
     <h2>Etapas</h2>
+    <p class="dica so-edicao" id="dica-lista">Arraste pela alça ⠿ (ou use ↑ ↓) para mudar a ordem.
+      Uma etapa sem ligação definida segue para a próxima da lista.</p>
     <ol id="lista-etapas"></ol>
+    <button type="button" id="btn-nova-etapa" class="so-edicao primario">+ Nova etapa</button>
   </section>
 
   <section class="legislacao">
     <h2>Legislação citada</h2>
+    <p class="dica">Os links abrem o texto compilado no site do Planalto.</p>
     <div class="leis-colunas">
       <div class="lei">
-        <h3>ECA — Lei nº 8.069/1990</h3>
+        <h3><a href="https://www.planalto.gov.br/ccivil_03/leis/l8069.htm" target="_blank" rel="noopener">ECA — Lei nº 8.069/1990 ↗</a></h3>
         <p>Arts. 19, 19-A, 22, 24, 25, 39, 50, 90, 93, 98, 101, 155 a 158, 161 a 163, 198 e 199-A a 199-E.</p>
       </div>
       <div class="lei">
-        <h3>Código Civil — Lei nº 10.406/2002</h3>
+        <h3><a href="https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm" target="_blank" rel="noopener">Código Civil — Lei nº 10.406/2002 ↗</a></h3>
         <p>Art. 1.638 — hipóteses de destituição do poder familiar.</p>
       </div>
       <div class="lei">
-        <h3>Lei nº 13.509/2017</h3>
+        <h3><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13509.htm" target="_blank" rel="noopener">Lei nº 13.509/2017 ↗</a></h3>
         <p>Dispõe sobre adoção e altera o ECA — entrega voluntária e prazo máximo de acolhimento.</p>
       </div>
     </div>
@@ -77,6 +122,74 @@
     Vara antes do uso.</p>
     <p>Elaborado pelo servidor Rogério Soares - Mat. 50.399 - TJPR.</p>
   </footer>
+
+  <dialog id="dlg-etapa" class="dlg">
+    <form method="dialog">
+      <h2 id="dlg-etapa-titulo">Editar etapa</h2>
+      <label>Título <input name="titulo" required></label>
+      <div class="dlg-linha">
+        <label>Tipo
+          <select name="tipo">
+            <option value="acao">Etapa</option>
+            <option value="decisao">Decisão</option>
+            <option value="prazo">Prazo</option>
+            <option value="fim">Fim</option>
+          </select>
+        </label>
+        <label>Prazo <input name="prazo" placeholder="ex.: 10 dias"></label>
+      </div>
+      <label>Artigo <input name="artigo" placeholder="ex.: ECA art. 158"></label>
+      <label>Responsável <input name="responsavel" list="lista-responsaveis"></label>
+      <datalist id="lista-responsaveis"></datalist>
+      <label>Observações <textarea name="obs" rows="3"></textarea></label>
+      <fieldset>
+        <legend>Depois desta etapa</legend>
+        <label class="check"><input type="radio" name="segue" value="proxima"> Segue para a próxima etapa da lista</label>
+        <label class="check"><input type="radio" name="segue" value="ligacoes"> Vai para etapas específicas (ramos)</label>
+        <label class="check"><input type="radio" name="segue" value="fim"> Encerra aqui</label>
+        <div id="ligacoes-edit" class="ligacoes-edit"></div>
+      </fieldset>
+      <p class="dica" id="chegam"></p>
+      <div class="dlg-botoes">
+        <button type="submit" value="cancelar" formnovalidate>Cancelar</button>
+        <button type="submit" value="ok" class="primario">Salvar etapa</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-processo" class="dlg">
+    <form method="dialog">
+      <h2 id="dlg-processo-titulo">Novo processo</h2>
+      <label>Nome do processo <input name="nome" required placeholder="ex.: Adoção"></label>
+      <label id="campo-primeiro-fundamento">Primeiro fundamento
+        <input name="fundamento" placeholder="ex.: Rito geral — ECA arts. 39 a 52"></label>
+      <div class="dlg-botoes">
+        <button type="submit" value="cancelar" formnovalidate>Cancelar</button>
+        <button type="submit" value="ok" class="primario">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-fundamento" class="dlg">
+    <form method="dialog">
+      <h2 id="dlg-fundamento-titulo">Novo fundamento</h2>
+      <label>Nome do fundamento <input name="nome" required placeholder="ex.: Art. 1.638, II, CC — abandono"></label>
+      <label>Base legal <span class="dica">(uma por linha)</span>
+        <textarea name="base_legal" rows="3" placeholder="ECA arts. 155–163&#10;CC art. 1.638"></textarea></label>
+      <div class="dlg-linha">
+        <label>Revisado por <input name="revisado_por"></label>
+        <label>Revisado em <input name="revisado_em" type="date"></label>
+      </div>
+      <label class="check" id="campo-copiar"><input type="checkbox" name="copiar" checked>
+        Começar com uma cópia das etapas do fundamento atual</label>
+      <div class="dlg-botoes">
+        <button type="submit" value="cancelar" formnovalidate>Cancelar</button>
+        <button type="submit" value="ok" class="primario">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
   <script src="assets/vendor/mermaid.min.js"></script>
   <script src="data/bundle.js"></script>

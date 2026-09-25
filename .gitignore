@@ -146,3 +146,6 @@ vite.config.ts.timestamp-*
 idea.png
 chat.txt
 _ai-metrics/
+
+# Transcrições de sessões locais
+chat.txt
