@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxogramas processuais — Vara da Infância e Juventude</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Fluxogramas processuais — VIJ</h1>
+    <p class="sub">Vara da Infância e Juventude</p>
+  </header>
+
+  <section class="controles" aria-label="Controles">
+    <div class="filtro-principal">
+      <label for="sel-processo">Tipo de processo
+        <select id="sel-processo"></select>
+      </label>
+      <label for="sel-fundamento">Fundamento legal
+        <select id="sel-fundamento"></select>
+      </label>
+    </div>
+    <div class="filtros">
+      <input type="search" id="filtro-texto" placeholder="Buscar etapa, artigo, responsável…">
+      <select id="filtro-responsavel" aria-label="Filtrar por responsável"></select>
+      <label class="check">
+        <input type="checkbox" id="filtro-prazo"> Só etapas com prazo
+      </label>
+      <button id="limpar-filtros" type="button">Limpar filtros</button>
+    </div>
+  </section>
+
+  <section class="acoes">
+    <button id="btn-orientacao" type="button">Ver em vertical</button>
+    <button id="btn-imprimir" type="button">Imprimir / PDF</button>
+    <button id="btn-svg" type="button">Exportar SVG</button>
+  </section>
+
+  <main>
+    <div class="diagrama" id="diagrama"></div>
+    <aside class="painel" id="painel" hidden></aside>
+  </main>
+
+  <div class="legenda">
+    <span class="sw"></span> etapa &nbsp;&nbsp;
+    <span class="sw sw-decisao"></span> decisão &nbsp;&nbsp;
+    <span class="sw sw-prazo"></span> prazo &nbsp;&nbsp;
+    <span class="sw sw-fim"></span> fim
+  </div>
+
+  <section class="lista">
+    <h2>Etapas</h2>
+    <ol id="lista-etapas"></ol>
+  </section>
+
+  <section class="legislacao">
+    <h2>Legislação citada</h2>
+    <div class="leis-colunas">
+      <div class="lei">
+        <h3>ECA — Lei nº 8.069/1990</h3>
+        <p>Arts. 19, 19-A, 22, 24, 25, 39, 50, 90, 93, 98, 101, 155 a 158, 161 a 163, 198 e 199-A a 199-E.</p>
+      </div>
+      <div class="lei">
+        <h3>Código Civil — Lei nº 10.406/2002</h3>
+        <p>Art. 1.638 — hipóteses de destituição do poder familiar.</p>
+      </div>
+      <div class="lei">
+        <h3>Lei nº 13.509/2017</h3>
+        <p>Dispõe sobre adoção e altera o ECA — entrega voluntária e prazo máximo de acolhimento.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="rodape">
+    <p>Material de apoio. Conteúdo jurídico preliminar — conferir com a equipe da
+    Vara antes do uso.</p>
+    <p>Elaborado pelo servidor Rogério Soares - Mat. 50.399 - TJPR.</p>
+  </footer>
+
+  <script src="assets/vendor/mermaid.min.js"></script>
+  <script src="data/bundle.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
