@@ -2,6 +2,40 @@
 
 Ver [plan.md](plan.md).
 
+## Próximos passos (retomar daqui)
+
+Situação em 25/09/2026: a página já permite editar tudo (processos,
+fundamentos, etapas e ligações) e gravar em `data/bundle.js`. O conteúdo
+jurídico continua preliminar.
+
+1. **Definições com a Vara**
+   - [ ] Onde a página vai rodar: pasta compartilhada/local (`file://`) ou
+     intranet. Em `http://` sem HTTPS o navegador não deixa gravar direto no
+     arquivo; a página baixa uma cópia.
+   - [ ] Quem edita e como a versão oficial é mantida (um responsável faz o
+     commit do `data/bundle.js`?). Se várias pessoas precisarem editar ao
+     mesmo tempo pela rede, avaliar um servidor simples.
+   - [ ] Manter ou não nome e matrícula no rodapé (o repositório é público).
+2. **Revisão do conteúdo atual**
+   - [ ] DPF: conferir o ramo novo da suspensão (art. 157 → criança confiada
+     a pessoa idônea) e a posição do estudo social, que o art. 157, §1º manda
+     determinar junto com a citação.
+   - [ ] Decisões com uma só saída ("Sentença", "Homologação da renúncia"):
+     dar ramos ou trocar o tipo para "Etapa".
+   - [ ] Preencher "revisado por / em" de cada fundamento depois da revisão.
+3. **Conteúdo novo** (pela própria página: ✎ Editar fluxos)
+   - [ ] DPF: um fundamento por hipótese do art. 1.638 CC (I a V e parágrafo
+     único), começando como cópia do rito geral.
+   - [ ] Adoção; guarda/tutela; medidas protetivas; apuração de ato
+     infracional.
+4. **Melhorias na página**
+   - [ ] Link direto ao artigo na página do Planalto (verificar as âncoras).
+   - [ ] Link direto por fluxo (`?processo=dpf&fundamento=...`).
+   - [ ] Tema escuro.
+   - [ ] Guardar no repositório o teste automatizado (Playwright) usado para
+     validar a edição.
+   - [ ] Guia curto, com imagens, para quem vai editar sem programar.
+
 ## Fase 0 — Definições
 - [ ] Levantar fluxos já existentes no trabalho (documentos, planilhas, anotações)
 - [ ] Definir onde a página roda (intranet / internet / local)
