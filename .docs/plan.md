@@ -16,8 +16,9 @@ responsável e observações.
 | Tema | Decisão | Motivo |
 |---|---|---|
 | Formato | Página web estática (sem backend, sem banco) | Abre em qualquer navegador, hospeda em intranet/GitHub Pages/pasta compartilhada |
-| Diagrama | **Mermaid.js** (CDN jsDelivr) | Fluxo descrito em texto; editável por quem não programa |
-| Dados | 1 arquivo **JSON** por processo/fundamento | Separa conteúdo de apresentação; novo fluxo = novo arquivo |
+| Diagrama | **Mermaid.js** (cópia local em `assets/vendor/`) | Fluxo descrito em texto; editável por quem não programa |
+| Dados | `data/bundle.js` com todos os fluxos (JSON após `window.FLUXOGRAMAS =`) | Abre via `file://`; a página regrava o arquivo |
+| Edição | Na própria página, com rascunho no navegador e "Salvar no arquivo" | Criar/alterar fluxos sem programar e sem servidor |
 | Interface | HTML + CSS + JavaScript puro | Sem build, sem framework; escopo pequeno |
 | Exportação | Imprimir/PDF pelo navegador + exportar SVG | Uso em audiência, anexos, treinamento |
 | Privacidade | Só fluxos genéricos, **nenhum dado de partes** | LGPD e sigilo do ECA (art. 143) |
@@ -39,9 +40,13 @@ fluxogramas/
 └── .docs/                # plano e tarefas
 ```
 
-Obs.: `fetch()` de JSON não funciona abrindo via `file://` em alguns navegadores.
-Alternativas: servir com servidor local simples, ou gerar um `data/bundle.js`
-com todos os fluxos embutidos (decidir na Fase 1).
+Decisão (Fase 1): como `fetch()` de JSON não funciona via `file://`, todos os
+fluxos ficam embutidos em `data/bundle.js`. A página o regrava pela File System
+Access API (Chrome/Edge) ou baixa uma cópia para substituir o arquivo.
+
+Regra das ligações: uma etapa sem ligação de saída segue para a próxima da
+lista (exceto tipo `fim` ou `encerra: true`). Assim, mudar a ordem dos cards
+religa a sequência; só ramos (decisões) precisam de ligação explícita.
 
 ## Modelo de dados (rascunho)
 
